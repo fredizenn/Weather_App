@@ -77,8 +77,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
           final data = snapshot.data!;
 
           final currentTemp = data['main']['temp'];
-          final currentSky = data[''];
-
+          final currentSky = data['weather'][0]['main'];
+          final currentPressure = data['main']['pressure'];
+          final currentHumidity = data['main']['humidity'];
+          final currentWindSpeed = data['wind']['speed'];
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -106,16 +108,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              const Icon(
-                                Icons.cloud,
+                              Icon(
+                                currentSky == 'Clouds' || currentSky == 'Rain' ?
+                                Icons.cloud : Icons.sunny,
                                 size: 64,
                               ),
                               const SizedBox(
                                 height: 16,
                               ),
-                              const Text(
-                                'Rain',
-                                style: TextStyle(
+                               Text(
+                                currentSky,
+                                style: const TextStyle(
                                   fontSize: 20,
                                 ),
                               ),
@@ -172,20 +175,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     AdditionalInfoItem(
-                        icon: Icons.water_drop, label: 'Humidity', value: '94'),
+                        icon: Icons.water_drop, label: 'Humidity', value: currentHumidity.toString()),
                     AdditionalInfoItem(
                       icon: Icons.air,
                       label: 'Wind Speed',
-                      value: '7.5',
+                      value: currentWindSpeed.toString(),
                     ),
                     AdditionalInfoItem(
                       icon: Icons.umbrella,
                       label: 'Pressure',
-                      value: '990',
+                      value: currentPressure.toString(),
                     ),
                   ],
                 )
